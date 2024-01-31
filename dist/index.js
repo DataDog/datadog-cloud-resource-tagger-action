@@ -71,8 +71,12 @@ function run() {
             getArgs("--output", "output_format"),
             getArgs("--dry-run", "dry-run"),
         ].flat();
-        
-        const downloadUrl = utils.getDownloadUrl(cloudResourceTaggerVersion);
+        const cloudResourceTaggerExactVersion = cloudResourceTaggerVersion === "latest" ||
+            cloudResourceTaggerVersion === "main"
+            ? yield utils.getLatestReleaseVersion()
+            : cloudResourceTaggerVersion;
+        console.log("cloudResourceExactTaggerVersion", cloudResourceTaggerExactVersion);
+        const downloadUrl = utils.getDownloadUrl(cloudResourceTaggerExactVersion);
         console.log("downloadUrl", downloadUrl);
         const pathToTarball = yield tc.downloadTool(downloadUrl);
         const extractFn = downloadUrl.endsWith(".zip")
