@@ -1,0 +1,39 @@
+{
+  "name": "datadog-cloud-resource-tagger-action",
+  "version": "0.0.1",
+  "description": "This GitHub Action runs [Datadog Cloud Resource Tagger](https://github.com/DataDog/datadog-cloud-resource-tagger) against an IAC (Infrastructure-as-Code) repository.",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "format": "prettier --write '**/*.ts'",
+    "format-check": "prettier --check '**/*.ts'",
+    "lint": "eslint src/**/*.ts",
+    "package": "ncc build --source-map --license licenses.txt",
+    "update": "npm update --registry https://registry.npmjs.org/",
+    "all": "npm run build && npm run format && npm run lint && npm run package"
+  },
+  "keywords": [
+    "actions",
+    "terraform"
+  ],
+  "author": "",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "@actions/core": "^1.10.1",
+    "@actions/exec": "^1.1.1",
+    "@actions/tool-cache": "^2.0.1",
+    "@octokit/rest": "^19.0.13"
+  },
+  "devDependencies": {
+    "@types/node": "^16.18.61",
+    "@typescript-eslint/eslint-plugin": "^6.20.0",
+    "@typescript-eslint/parser": "^6.20.0",
+    "@vercel/ncc": "^0.38.1",
+    "eslint": "^8.56.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-prettier": "^5.1.3",
+    "eslint-plugin-react": "^7.33.2",
+    "prettier": "^3.1.0",
+    "typescript": "^5.3.3"
+  }
+}
