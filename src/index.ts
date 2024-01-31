@@ -16,8 +16,9 @@ async function run(): Promise<void> {
       ? process.env.GITHUB_HEAD_REF
       : process.env.GITHUB_REF_NAME;
   await exec.exec(`git switch ${githubRef}`);
+  console.log("finished switching");
   const cloudResourceTaggerVersion = core.getInput("version");
-
+  console.log("cloudResourceTaggerVersion", cloudResourceTaggerVersion);
   // Computing args
   const cloudResourceTaggerArgs: string[] = [
     "tag",
@@ -33,7 +34,12 @@ async function run(): Promise<void> {
     cloudResourceTaggerVersion === "main"
       ? await utils.getLatestReleaseVersion()
       : cloudResourceTaggerVersion;
+  console.log(
+    "cloudResourceExactTaggerVersion",
+    cloudResourceTaggerExactVersion,
+  );
   const downloadUrl = utils.getDownloadUrl(cloudResourceTaggerExactVersion);
+  console.log("downloadUrl", downloadUrl);
   const pathToTarball = await tc.downloadTool(downloadUrl);
   const extractFn = downloadUrl.endsWith(".zip")
     ? tc.extractZip
