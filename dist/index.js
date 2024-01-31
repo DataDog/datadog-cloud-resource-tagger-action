@@ -69,8 +69,7 @@ function run() {
             getArgs("--output", "output_format"),
             getArgs("--dry-run", "dry-run"),
         ].flat();
-        // Downloading Yor
-        const cloudResourceTaggerExactVersion = cloudResourceTaggerVersion === "latest"
+        const cloudResourceTaggerExactVersion = cloudResourceTaggerVersion === "latest" || cloudResourceTaggerVersion === "main"
             ? yield utils.getLatestReleaseVersion()
             : cloudResourceTaggerVersion;
         const downloadUrl = utils.getDownloadUrl(cloudResourceTaggerExactVersion);
@@ -87,27 +86,6 @@ function run() {
             core.setFailed(`Datadog Cloud Resource Tagger Failed with failed with ${exitCode}`);
             return;
         }
-        // // Commit Changes if needed
-        // const gitStatus = await exec.getExecOutput(
-        //   'git status -s --untracked-files=no'
-        // )
-        // if (!gitStatus.stdout && !gitStatus.stderr) {
-        //   core.info('Nothing has changed')
-        //   return
-        // }
-        // if (!commitChanges) {
-        //   core.debug('Commit Change disabled, nothing to do')
-        //   return
-        // }
-        // core.info('Yor made changes, committing')
-        // await exec.exec('git add .')
-        // await exec.exec(
-        //   'git -c user.name=actions@github.com -c user.email="GitHub Actions" \
-        //   commit -m "Update tags (by Yor)" \
-        //   --author="github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>"'
-        // )
-        // core.info('Changes committed, pushing...')
-        // await exec.exec('git push origin')
     });
 }
 run();
