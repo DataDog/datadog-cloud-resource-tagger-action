@@ -1,0 +1,32 @@
+name: 'Datadog Cloud Resource Tagger GitHub Action'
+description: 'Run datadog-cloud-resource-tagger against IaC files as a GitHub Action.'
+inputs:
+  directory:
+    description: 'directory with IaC files to scan'
+    default: '.'
+    required: false
+  tag_groups:
+    description: 'Run on a specific check identifier (comma separated)'
+    required: false
+  tags:
+    description: 'comma separated list of tags to apply'
+    required: false
+  output_format:
+    description: 'The format of the output- cli or json'
+    required: false
+  commit_changes:
+    description: 'Choose whether the action will commit changes.'
+    default: true
+    required: false
+  version:
+    description: 'The datadog-cloud-resource-tagger version. Can be `latest` or a full version like `0.5.7`'
+    default: latest
+    required: false
+
+branding:
+  icon: 'shield'
+  color: 'purple'
+
+runs:
+  using: 'node16'
+  main: 'dist/index.js'
