@@ -182,14 +182,16 @@ function getLatestReleaseVersion() {
 }
 exports.getLatestReleaseVersion = getLatestReleaseVersion;
 function getDownloadUrl(version) {
+    let isLatest = false;
     let path = `releases/download/v${version}`;
     if (version === "latest") {
         path = `releases/latest/download`;
+        isLatest = true;
     }
     const os = getOS();
     const arch = getArch();
     const extension = os === "Windows" ? "zip" : "tar.gz";
-    const filename = `${exports.CLOUD_RESOURCE_TAGGER_REPO}_${version}_${os}_${arch}.${extension}`;
+    const filename = isLatest ? `${exports.CLOUD_RESOURCE_TAGGER_REPO}_${os}_${arch}.${extension}` : `${exports.CLOUD_RESOURCE_TAGGER_REPO}_${version}_${os}_${arch}.${extension}`;
     const url = `https://github.com/${ORGANIZATION}/${exports.CLOUD_RESOURCE_TAGGER_REPO}/${path}/${filename}`;
     core.debug(`Download url is ${url}`);
     return url;
