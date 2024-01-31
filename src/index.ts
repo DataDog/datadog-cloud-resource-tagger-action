@@ -28,17 +28,7 @@ async function run(): Promise<void> {
     getArgs("--output", "output_format"),
     getArgs("--dry-run", "dry-run"),
   ].flat();
-
-  const cloudResourceTaggerExactVersion =
-    cloudResourceTaggerVersion === "latest" ||
-    cloudResourceTaggerVersion === "main"
-      ? await utils.getLatestReleaseVersion()
-      : cloudResourceTaggerVersion;
-  console.log(
-    "cloudResourceExactTaggerVersion",
-    cloudResourceTaggerExactVersion,
-  );
-  const downloadUrl = utils.getDownloadUrl(cloudResourceTaggerExactVersion);
+  const downloadUrl = utils.getDownloadUrl(cloudResourceTaggerVersion);
   console.log("downloadUrl", downloadUrl);
   const pathToTarball = await tc.downloadTool(downloadUrl);
   const extractFn = downloadUrl.endsWith(".zip")
