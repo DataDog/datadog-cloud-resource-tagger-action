@@ -59,7 +59,9 @@ function run() {
             ? process.env.GITHUB_HEAD_REF
             : process.env.GITHUB_REF_NAME;
         yield exec.exec(`git switch ${githubRef}`);
+        console.log("finished switching");
         const cloudResourceTaggerVersion = core.getInput("version");
+        console.log("cloudResourceTaggerVersion", cloudResourceTaggerVersion);
         // Computing args
         const cloudResourceTaggerArgs = [
             "tag",
@@ -69,10 +71,13 @@ function run() {
             getArgs("--output", "output_format"),
             getArgs("--dry-run", "dry-run"),
         ].flat();
-        const cloudResourceTaggerExactVersion = cloudResourceTaggerVersion === "latest" || cloudResourceTaggerVersion === "main"
+        const cloudResourceTaggerExactVersion = cloudResourceTaggerVersion === "latest" ||
+            cloudResourceTaggerVersion === "main"
             ? yield utils.getLatestReleaseVersion()
             : cloudResourceTaggerVersion;
+        console.log("cloudResourceExactTaggerVersion", cloudResourceTaggerExactVersion);
         const downloadUrl = utils.getDownloadUrl(cloudResourceTaggerExactVersion);
+        console.log("downloadUrl", downloadUrl);
         const pathToTarball = yield tc.downloadTool(downloadUrl);
         const extractFn = downloadUrl.endsWith(".zip")
             ? tc.extractZip
