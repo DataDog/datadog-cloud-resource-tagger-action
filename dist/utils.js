@@ -153,8 +153,6 @@ function detectChangedFiles() {
                 filesAddedModified.push(filename);
             }
         }
-        // Log the output values.
-        core.info(`Files changes: ${filesAddedModified.join(", ")}`);
         return filesAddedModified;
     });
 }

@@ -130,8 +130,5 @@ export async function detectChangedFiles(): Promise<string[]> {
       filesAddedModified.push(filename);
     }
   }
-
-  // Log the output values.
-  core.info(`Files changes: ${filesAddedModified.join(", ")}`);
   return filesAddedModified;
 }
