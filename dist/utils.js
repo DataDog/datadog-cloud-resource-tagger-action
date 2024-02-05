@@ -35,10 +35,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getDownloadUrl = exports.getLatestReleaseVersion = exports.CLOUD_RESOURCE_TAGGER_REPO = void 0;
+exports.detectChangedFiles = exports.getDownloadUrl = exports.getLatestReleaseVersion = exports.CLOUD_RESOURCE_TAGGER_REPO = void 0;
 const os_1 = __importDefault(require("os"));
 const core = __importStar(require("@actions/core"));
 const rest_1 = require("@octokit/rest");
+const github_1 = require("@actions/github");
 const ORGANIZATION = "Datadog";
 exports.CLOUD_RESOURCE_TAGGER_REPO = "datadog-cloud-resource-tagger";
 function getArch() {
@@ -92,9 +93,69 @@ function getDownloadUrl(version) {
     const os = getOS();
     const arch = getArch();
     const extension = os === "Windows" ? "zip" : "tar.gz";
-    const filename = isLatest ? `${exports.CLOUD_RESOURCE_TAGGER_REPO}_${os}_${arch}.${extension}` : `${exports.CLOUD_RESOURCE_TAGGER_REPO}_${version}_${os}_${arch}.${extension}`;
+    const filename = isLatest
+        ? `${exports.CLOUD_RESOURCE_TAGGER_REPO}_${os}_${arch}.${extension}`
+        : `${exports.CLOUD_RESOURCE_TAGGER_REPO}_${version}_${os}_${arch}.${extension}`;
     const url = `https://github.com/${ORGANIZATION}/${exports.CLOUD_RESOURCE_TAGGER_REPO}/${path}/${filename}`;
     core.debug(`Download url is ${url}`);
     return url;
 }
 exports.getDownloadUrl = getDownloadUrl;
+function detectChangedFiles() {
+    var _a, _b, _c, _d;
+    return __awaiter(this, void 0, void 0, function* () {
+        // Create GitHub client with the API token.
+        const client = new github_1.GitHub(core.getInput("token", { required: true }));
+        const eventName = github_1.context.eventName;
+        // Retrieve the base and head commits
+        let base = "";
+        let head = "";
+        switch (eventName) {
+            case "pull_request":
+                base = (_b = (_a = github_1.context.payload.pull_request) === null || _a === void 0 ? void 0 : _a.base) === null || _b === void 0 ? void 0 : _b.sha;
+                head = (_d = (_c = github_1.context.payload.pull_request) === null || _c === void 0 ? void 0 : _c.head) === null || _d === void 0 ? void 0 : _d.sha;
+                break;
+            case "push":
+                base = github_1.context.payload.before;
+                head = github_1.context.payload.after;
+                break;
+            default:
+                core.setFailed(`This action can only be run on pull requests and pushes. ` +
+                    "Please submit an issue if you believe this is incorrect.");
+        }
+        // Log the base and head commits
+        core.info(`Base commit: ${base}`);
+        core.info(`Head commit: ${head}`);
+        // Ensure that the base and head properties are not empty
+        if (!base || !head) {
+            core.setFailed(`The base and head commits are missing from the payload for this ${github_1.context.eventName} event. `);
+        }
+        // Use GitHub's API to compare two commits.
+        // https://developer.github.com/v3/repos/commits/#compare-two-commits
+        const response = yield client.repos.compareCommits({
+            base,
+            head,
+            owner: github_1.context.repo.owner,
+            repo: github_1.context.repo.repo,
+        });
+        // Ensure that the request was successful.
+        if (response.status !== 200) {
+            core.setFailed(`The GitHub API for comparing the base and head commits for this ${github_1.context.eventName} event returned ${response.status}, expected 200.`);
+        }
+        // Get the changed files from the response payload.
+        const files = response.data.files;
+        const filesAddedModified = [];
+        for (const file of files) {
+            const filename = file.filename;
+            if (file.status === "added" ||
+                file.status === "modified" ||
+                file.status === "renamed") {
+                filesAddedModified.push(filename);
+            }
+        }
+        // Log the output values.
+        core.info(`Files changes: ${filesAddedModified.join(", ")}`);
+        return filesAddedModified;
+    });
+}
+exports.detectChangedFiles = detectChangedFiles;

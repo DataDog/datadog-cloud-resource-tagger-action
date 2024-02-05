@@ -1,6 +1,12 @@
 name: 'Datadog Cloud Resource Tagger GitHub Action'
 description: 'Run datadog-cloud-resource-tagger against IaC files as a GitHub Action.'
 inputs:
+  token:
+    description: >
+      GitHub token for GitHub API requests.
+      Users shouldn't need to set this themselves.
+    required: true
+    default: ${{ github.token }}
   directory:
     description: 'directory with IaC files to scan'
     default: '.'
