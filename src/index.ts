@@ -12,7 +12,7 @@ function getArgs(flag: string, input: string): string[] {
 
 async function run(): Promise<void> {
   const filesChanged = await utils.detectChangedFiles();
-  core.debug(`Files changed: ${filesChanged}`);
+  core.info(`Files changed: ${filesChanged}`);
 
   const githubRef =
     process.env.GITHUB_EVENT_NAME === "pull_request"
