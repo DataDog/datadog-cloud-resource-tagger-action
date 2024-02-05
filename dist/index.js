@@ -56,7 +56,7 @@ function getArgs(flag, input) {
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
         const filesChanged = yield utils.detectChangedFiles();
-        core.debug(`Files changed: ${filesChanged}`);
+        core.info(`Files changed: ${filesChanged}`);
         const githubRef = process.env.GITHUB_EVENT_NAME === "pull_request"
             ? process.env.GITHUB_HEAD_REF
             : process.env.GITHUB_REF_NAME;
@@ -72,7 +72,7 @@ function run() {
             getArgs("--dry-run", "commit_changes"),
             ["--changed-files", filesChanged.join(",")],
         ].flat();
-        core.debug(`Cloud Resource Tagger Args: ${cloudResourceTaggerArgs}`);
+        core.info(`Cloud Resource Tagger Args: ${cloudResourceTaggerArgs}`);
         const downloadUrl = utils.getDownloadUrl(cloudResourceTaggerVersion);
         const pathToTarball = yield tc.downloadTool(downloadUrl);
         const extractFn = downloadUrl.endsWith(".zip")

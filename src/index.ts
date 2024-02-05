@@ -31,7 +31,7 @@ async function run(): Promise<void> {
     getArgs("--dry-run", "commit_changes"),
     ["--changed-files", filesChanged.join(",")],
   ].flat();
-  core.debug(`Cloud Resource Tagger Args: ${cloudResourceTaggerArgs}`);
+  core.info(`Cloud Resource Tagger Args: ${cloudResourceTaggerArgs}`);
   const downloadUrl = utils.getDownloadUrl(cloudResourceTaggerVersion);
   const pathToTarball = await tc.downloadTool(downloadUrl);
   const extractFn = downloadUrl.endsWith(".zip")
