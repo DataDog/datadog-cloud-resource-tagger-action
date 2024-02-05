@@ -47,6 +47,7 @@ const core = __importStar(__nccwpck_require__(2186));
 const exec = __importStar(__nccwpck_require__(1514));
 const tc = __importStar(__nccwpck_require__(7784));
 const utils = __importStar(__nccwpck_require__(4729));
+const FILE_DELIMITER = "<<||>>";
 function getArgs(flag, input) {
     const value = core.getInput(input);
     if (value)
@@ -70,7 +71,7 @@ function run() {
             getArgs("--tags", "tags"),
             getArgs("--output", "output_format"),
             getArgs("--dry-run", "commit_changes"),
-            ["--changed-files", filesChanged.join(",")],
+            ["--changed-files", filesChanged.join(FILE_DELIMITER)],
         ].flat();
         core.info(`Cloud Resource Tagger Args: ${cloudResourceTaggerArgs}`);
         const downloadUrl = utils.getDownloadUrl(cloudResourceTaggerVersion);
