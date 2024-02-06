@@ -4,8 +4,6 @@ import * as exec from "@actions/exec";
 import * as tc from "@actions/tool-cache";
 import * as utils from "./utils";
 
-const FILE_DELIMITER = "<<||>>";
-
 function getArgs(flag: string, input: string): string[] {
   const value = core.getInput(input);
   if (value) return [flag, value];
@@ -31,7 +29,7 @@ async function run(): Promise<void> {
     getArgs("--tags", "tags"),
     getArgs("--output", "output_format"),
     getArgs("--dry-run", "commit_changes"),
-    ["--changed-files", filesChanged.join(FILE_DELIMITER)],
+    ["--changed-files", filesChanged.join(",")],
   ].flat();
   core.info(`Cloud Resource Tagger Args: ${cloudResourceTaggerArgs}`);
   const downloadUrl = utils.getDownloadUrl(cloudResourceTaggerVersion);
