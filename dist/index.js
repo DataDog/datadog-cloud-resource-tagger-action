@@ -69,7 +69,6 @@ function run() {
             getArgs("--tag-groups", "tag_groups"),
             getArgs("--tags", "tags"),
             getArgs("--output", "output_format"),
-            getArgs("--dry-run", "commit_changes"),
             ["--changed-files", filesChanged.join(",")],
         ].flat();
         core.info(`Cloud Resource Tagger Args: ${cloudResourceTaggerArgs}`);

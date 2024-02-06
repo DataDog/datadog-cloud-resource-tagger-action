@@ -20,10 +20,6 @@ inputs:
   output_format:
     description: 'The format of the output- cli or json'
     required: false
-  commit_changes:
-    description: 'Choose whether the action will commit changes.'
-    default: true
-    required: false
   version:
     description: 'The datadog-cloud-resource-tagger version. Can be `latest` or a full version like `0.5.7`'
     default: latest
