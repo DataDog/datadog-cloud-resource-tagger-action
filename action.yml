@@ -11,14 +11,11 @@ inputs:
     description: 'directory with IaC files to scan'
     default: '.'
     required: false
-  tag_groups:
-    description: 'Run on a specific check identifier (comma separated)'
+  providers:
+    description: 'comma separated list of providers to scan'
     required: false
-  tags:
-    description: 'comma separated list of tags to apply'
-    required: false
-  output_format:
-    description: 'The format of the output- cli or json'
+  resource_types:
+    description: 'comma separated list of resource types to scan (skip all others)'
     required: false
   version:
     description: 'The datadog-cloud-resource-tagger version. Can be `latest` or a full version like `0.5.7`'
