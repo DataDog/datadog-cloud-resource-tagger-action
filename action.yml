@@ -21,6 +21,10 @@ inputs:
     description: 'The datadog-cloud-resource-tagger version. Can be `latest` or a full version like `0.5.7`'
     default: latest
     required: false
+  tags:
+    description: 'The specific list of tags to apply'
+    default: "dd_git_org,dd_git_repo,dd_git_file,dd_git_modified_commit,dd_git_resource_lines"
+    required: false
 
 branding:
   icon: 'shield'

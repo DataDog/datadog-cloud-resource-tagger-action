@@ -66,6 +66,7 @@ function run() {
         const cloudResourceTaggerArgs = [
             "tag",
             getArgs("-d", "directory"),
+            getArgs("-t", "tags"),
             getArgs("--include-resource-types", "resource_types"),
             getArgs("--include-providers", "providers"),
             ["--changed-files", filesChanged.join(",")],
