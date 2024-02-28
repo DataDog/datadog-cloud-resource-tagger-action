@@ -40,6 +40,8 @@ jobs:
         uses: Datadog/datadog-cloud-resource-tagger-action@main
         with:
           directory: ./terraform
+          providers: aws,gcp
+          resource_types: aws_s3_bucket,gcp_compute_instance 
 
       - name: Terraform Apply
         run: terraform apply -auto-approve
