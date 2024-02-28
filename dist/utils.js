@@ -35,7 +35,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.detectChangedFiles = exports.getDownloadUrl = exports.getLatestReleaseVersion = exports.CLOUD_RESOURCE_TAGGER_REPO = void 0;
+exports.isArgPresent = exports.detectChangedFiles = exports.getDownloadUrl = exports.getLatestReleaseVersion = exports.CLOUD_RESOURCE_TAGGER_REPO = void 0;
 const os_1 = __importDefault(require("os"));
 const core = __importStar(require("@actions/core"));
 const rest_1 = require("@octokit/rest");
@@ -157,3 +157,7 @@ function detectChangedFiles() {
     });
 }
 exports.detectChangedFiles = detectChangedFiles;
+function isArgPresent(arg) {
+    return core.getInput(arg) !== "";
+}
+exports.isArgPresent = isArgPresent;

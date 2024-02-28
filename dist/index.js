@@ -55,8 +55,12 @@ function getArgs(flag, input) {
 }
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
-        const filesChanged = yield utils.detectChangedFiles();
-        core.info(`Files changed: ${filesChanged}`);
+        const changedFilesOnly = utils.isArgPresent("changed_files_only");
+        let filesChanged = [];
+        if (changedFilesOnly) {
+            filesChanged = yield utils.detectChangedFiles();
+            core.info(`Files changed: ${filesChanged}`);
+        }
         const githubRef = process.env.GITHUB_EVENT_NAME === "pull_request"
             ? process.env.GITHUB_HEAD_REF
             : process.env.GITHUB_REF_NAME;
@@ -69,9 +73,12 @@ function run() {
             getArgs("-t", "tags"),
             getArgs("--include-resource-types", "resource_types"),
             getArgs("--include-providers", "providers"),
-            ["--changed-files", filesChanged.join(",")],
-        ].flat();
-        core.info(`Cloud Resource Tagger Args: ${cloudResourceTaggerArgs}`);
+        ];
+        if (changedFilesOnly) {
+            cloudResourceTaggerArgs.push(["--changed-files", filesChanged.join(",")]);
+        }
+        const cloudResourceTaggerArgsString = cloudResourceTaggerArgs.flat();
+        core.info(`Cloud Resource Tagger Args: ${cloudResourceTaggerArgsString}`);
         const downloadUrl = utils.getDownloadUrl(cloudResourceTaggerVersion);
         const pathToTarball = yield tc.downloadTool(downloadUrl);
         const extractFn = downloadUrl.endsWith(".zip")
@@ -81,7 +88,7 @@ function run() {
         // Executing CloudResourceTagger
         const pathToCloudResourceTagger = path_1.default.join(pathToCLI, utils.CLOUD_RESOURCE_TAGGER_REPO);
         yield exec.exec(pathToCloudResourceTagger, ["-v"]);
-        const exitCode = yield exec.exec(pathToCloudResourceTagger, cloudResourceTaggerArgs);
+        const exitCode = yield exec.exec(pathToCloudResourceTagger, cloudResourceTaggerArgsString);
         if (exitCode > 0) {
             core.setFailed(`Datadog Cloud Resource Tagger Failed with failed with ${exitCode}`);
             return;
@@ -134,7 +141,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.detectChangedFiles = exports.getDownloadUrl = exports.getLatestReleaseVersion = exports.CLOUD_RESOURCE_TAGGER_REPO = void 0;
+exports.isArgPresent = exports.detectChangedFiles = exports.getDownloadUrl = exports.getLatestReleaseVersion = exports.CLOUD_RESOURCE_TAGGER_REPO = void 0;
 const os_1 = __importDefault(__nccwpck_require__(2037));
 const core = __importStar(__nccwpck_require__(2186));
 const rest_1 = __nccwpck_require__(5375);
@@ -256,6 +263,10 @@ function detectChangedFiles() {
     });
 }
 exports.detectChangedFiles = detectChangedFiles;
+function isArgPresent(arg) {
+    return core.getInput(arg) !== "";
+}
+exports.isArgPresent = isArgPresent;
 
 
 /***/ }),
