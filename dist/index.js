@@ -55,7 +55,7 @@ function getArgs(flag, input) {
 }
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
-        const changedFilesOnly = utils.isArgPresent("changed_files_only");
+        const changedFilesOnly = utils.isArgTrue("changed_files_only");
         let filesChanged = [];
         if (changedFilesOnly) {
             filesChanged = yield utils.detectChangedFiles();
@@ -141,7 +141,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.isArgPresent = exports.detectChangedFiles = exports.getDownloadUrl = exports.getLatestReleaseVersion = exports.CLOUD_RESOURCE_TAGGER_REPO = void 0;
+exports.isArgTrue = exports.detectChangedFiles = exports.getDownloadUrl = exports.getLatestReleaseVersion = exports.CLOUD_RESOURCE_TAGGER_REPO = void 0;
 const os_1 = __importDefault(__nccwpck_require__(2037));
 const core = __importStar(__nccwpck_require__(2186));
 const rest_1 = __nccwpck_require__(5375);
@@ -263,10 +263,10 @@ function detectChangedFiles() {
     });
 }
 exports.detectChangedFiles = detectChangedFiles;
-function isArgPresent(arg) {
-    return core.getInput(arg) !== "";
+function isArgTrue(arg) {
+    return core.getInput(arg) !== "" && core.getInput(arg) === "true";
 }
-exports.isArgPresent = isArgPresent;
+exports.isArgTrue = isArgTrue;
 
 
 /***/ }),
