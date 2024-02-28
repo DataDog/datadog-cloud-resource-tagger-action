@@ -11,7 +11,7 @@ function getArgs(flag: string, input: string): string[] {
 }
 
 async function run(): Promise<void> {
-  const changedFilesOnly = utils.isArgPresent("changed_files_only");
+  const changedFilesOnly = utils.isArgTrue("changed_files_only");
   let filesChanged: string[] = [];
   if (changedFilesOnly) {
     filesChanged = await utils.detectChangedFiles();
