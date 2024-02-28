@@ -132,3 +132,7 @@ export async function detectChangedFiles(): Promise<string[]> {
   }
   return filesAddedModified;
 }
+
+export function isArgPresent(arg: string): boolean {
+  return core.getInput(arg) !== "";
+}

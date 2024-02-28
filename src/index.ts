@@ -11,8 +11,12 @@ function getArgs(flag: string, input: string): string[] {
 }
 
 async function run(): Promise<void> {
-  const filesChanged = await utils.detectChangedFiles();
-  core.info(`Files changed: ${filesChanged}`);
+  const changedFilesOnly = utils.isArgPresent("changed_files_only");
+  let filesChanged: string[] = [];
+  if (changedFilesOnly) {
+    filesChanged = await utils.detectChangedFiles();
+    core.info(`Files changed: ${filesChanged}`);
+  }
 
   const githubRef =
     process.env.GITHUB_EVENT_NAME === "pull_request"
@@ -22,15 +26,18 @@ async function run(): Promise<void> {
 
   const cloudResourceTaggerVersion = core.getInput("version");
   // Computing args
-  const cloudResourceTaggerArgs: string[] = [
+  const cloudResourceTaggerArgs: Array<string | string[]> = [
     "tag",
     getArgs("-d", "directory"),
     getArgs("-t", "tags"),
     getArgs("--include-resource-types", "resource_types"),
     getArgs("--include-providers", "providers"),
-    ["--changed-files", filesChanged.join(",")],
-  ].flat();
-  core.info(`Cloud Resource Tagger Args: ${cloudResourceTaggerArgs}`);
+  ];
+  if (changedFilesOnly) {
+    cloudResourceTaggerArgs.push(["--changed-files", filesChanged.join(",")]);
+  }
+  const cloudResourceTaggerArgsString = cloudResourceTaggerArgs.flat();
+  core.info(`Cloud Resource Tagger Args: ${cloudResourceTaggerArgsString}`);
   const downloadUrl = utils.getDownloadUrl(cloudResourceTaggerVersion);
   const pathToTarball = await tc.downloadTool(downloadUrl);
   const extractFn = downloadUrl.endsWith(".zip")
@@ -46,7 +53,7 @@ async function run(): Promise<void> {
   await exec.exec(pathToCloudResourceTagger, ["-v"]);
   const exitCode = await exec.exec(
     pathToCloudResourceTagger,
-    cloudResourceTaggerArgs,
+    cloudResourceTaggerArgsString,
   );
 
   if (exitCode > 0) {
