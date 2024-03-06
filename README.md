@@ -4,7 +4,7 @@ This GitHub Action runs [Datadog Cloud Resource Tagger](https://github.com/DataD
 # GitHub Action Flags
 You can customize the GitHub Action step with the following attributes:
 * directory: specify the directory to scope tagging over. By default will use `.` if no value is provided (ie tag everything)
-* tags: specify the exact list of tags to add. By default will only tag with: "dd_git_org,dd_git_repo,dd_git_file,dd_git_modified_commit,dd_git_resource_lines"`
+* tags: specify the exact list of tags to add. By default will only tag with: "dd_git_org,dd_git_repo,dd_git_file,dd_git_modified_commit,dd_git_resource_signature"`
 * changed_files_only: specify whether to run on changed files only. By default will run on everything unless set to true
 * resource_types: specify the comma separated resource types to tag and skip all others ie `"aws_s3_bucket,gcp_compute_instance"`
 * providers: specify the comma separated list of providers to tag and skip all others ie `"aws,gcp"`
