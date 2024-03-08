@@ -29,6 +29,10 @@ inputs:
     description: 'Only tag files that have been changed in the current PR or branch'
     default: false
     required: false
+  dry_run:
+    description: 'Run the action without commiting the tags to the repository. Default is false'
+    default: false
+    required: false
 
 branding:
   icon: 'shield'

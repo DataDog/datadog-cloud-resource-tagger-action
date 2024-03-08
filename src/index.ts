@@ -32,6 +32,7 @@ async function run(): Promise<void> {
     getArgs("-t", "tags"),
     getArgs("--include-resource-types", "resource_types"),
     getArgs("--include-providers", "providers"),
+    getArgs("--dry-run", "dry_run"),
   ];
   if (changedFilesOnly) {
     cloudResourceTaggerArgs.push(["--changed-files", filesChanged.join(",")]);
