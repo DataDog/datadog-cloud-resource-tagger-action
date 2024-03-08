@@ -23,7 +23,7 @@ inputs:
     required: false
   tags:
     description: 'The specific list of tags to apply'
-    default: "dd_git_org,dd_git_repo,dd_git_file,dd_git_modified_commit,dd_git_resource_signature"
+    default: "dd_git_org,dd_git_repo,dd_git_file,dd_git_resource_signature"
     required: false
   changed_files_only:
     description: 'Only tag files that have been changed in the current PR or branch'
