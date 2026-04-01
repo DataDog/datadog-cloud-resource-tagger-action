@@ -23,7 +23,7 @@
     "@actions/exec": "^1.1.1",
     "@actions/github": "^2.1.0",
     "@actions/tool-cache": "^2.0.1",
-    "@octokit/rest": "^19.0.13"
+    "@octokit/rest": "^22.0.1"
   },
   "devDependencies": {
     "@types/node": "^16.18.61",
