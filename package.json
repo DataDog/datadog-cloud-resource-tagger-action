@@ -36,5 +36,31 @@
     "eslint-plugin-react": "^7.33.2",
     "prettier": "^3.1.0",
     "typescript": "^5.3.3"
+  },
+  "overrides": {
+    "@octokit/rest": {
+      "@octokit/request": "^8.4.1",
+      "@octokit/request-error": "^5.1.1"
+    },
+    "eslint": {
+      "brace-expansion": "^1.1.15",
+      "cross-spawn": "^7.0.6"
+    },
+    "eslint-plugin-react": {
+      "brace-expansion": "^1.1.15"
+    },
+    "@typescript-eslint/eslint-plugin": {
+      "braces": "^3.0.3",
+      "micromatch": "^4.0.8",
+      "picomatch": "^2.3.2"
+    },
+    "@typescript-eslint/parser": {
+      "braces": "^3.0.3",
+      "micromatch": "^4.0.8",
+      "picomatch": "^2.3.2"
+    },
+    "@typescript-eslint/typescript-estree": {
+      "minimatch": "^9.0.9"
+    }
   }
 }
